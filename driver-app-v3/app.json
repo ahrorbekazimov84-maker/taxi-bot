@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Taxi Haydovchi",
+    "slug": "taxi-driver-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "uz.taxiapp.driver",
+      "versionCode": 2,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "INTERNET"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Ilova haydovchi joylashuvini kuzatish uchun lokatsiyangizdan foydalanadi."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2ea79858-08c3-4b9e-a6e9-40b41bc63522"
+      }
+    }
+  }
+}

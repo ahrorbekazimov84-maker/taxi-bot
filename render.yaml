@@ -1,0 +1,18 @@
+services:
+  - type: web_service
+    name: taxi-backend
+    env: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+
+  - type: static_site
+    name: taxi-crm
+    env: static
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: cd crm && npm install && npm run build
+    publishPath: crm/build

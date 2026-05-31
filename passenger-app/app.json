@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "c2934c0f-f087-47d4-97c9-a30b5ffe84c9"
+      }
+    },
+    "owner": "uzmaster",
+    "android": {
+      "package": "com.uzmaster.taxipassengerapp"
+    }
+  }
+}
