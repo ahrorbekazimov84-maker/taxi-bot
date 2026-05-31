@@ -1,7 +1,11 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
-export const API_URL = 'http://172.20.10.2:5000/api'; // <-- serveringiz IP sini yozing
+const API_URL =
+  Constants.expoConfig?.extra?.API_URL ||
+  Constants.manifest?.extra?.API_URL ||
+  'https://taxi-backend.onrender.com/api';
 
 const api = axios.create({ baseURL: API_URL, timeout: 10000 });
 

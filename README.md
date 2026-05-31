@@ -66,7 +66,21 @@ Brauzer: `http://localhost:3000`
 
 ---
 
-## 3️⃣ Mobil ilovalar (Driver & Passenger)
+## 3️⃣ Render 24/7 hosting
+
+Backend va CRM Render orqali uzluksiz ishlashga moslandi.
+
+- `taxi-backend` — backend xizmati
+- `taxi-db` — Postgres ma'lumotlar bazasi
+- `taxi-crm` — React CRM static sayti
+
+CRM uchun `REACT_APP_API_URL` `https://taxi-backend.onrender.com/api` ga bog‘landi.
+
+Mobil ilovalar ham `https://taxi-backend.onrender.com/api` orqali ishlay olish uchun `driver-app-v3` va `passenger-app` da API URL avtomatik configdan olinadi.
+
+---
+
+## 4️⃣ Mobil ilovalar (Driver & Passenger)
 
 ### Talablar
 - Node.js 18+
@@ -76,11 +90,8 @@ Brauzer: `http://localhost:3000`
 ### Driver App
 
 ```bash
-cd driver-app
+cd driver-app-v3
 npm install
-# src/utils/api.js da API_URL ni o'zgartiring:
-# 'http://YOUR_SERVER_IP:5000/api'
-# (localhost emas! telefoningizning IP manzilingiz kerak)
 npx expo start
 ```
 
@@ -89,9 +100,12 @@ npx expo start
 ```bash
 cd passenger-app
 npm install
-# src/utils/api.js da API_URL ni o'zgartiring
 npx expo start
 ```
+
+Mobil ilovalar `src/utils/api.js` ichida hozirgi `API_URL` ni qo'lda o'zgartirish shart emas: ular Expo konfiguratsiyadan `API_URL` oladi va suiste'mol bo'lishini kamaytiradi.
+
+---
 
 ---
 
