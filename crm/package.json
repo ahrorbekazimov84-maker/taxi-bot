@@ -11,6 +11,9 @@
     "recharts": "^2.9.0",
     "react-scripts": "5.0.1"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"

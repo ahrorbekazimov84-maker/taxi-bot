@@ -24,8 +24,6 @@ services:
         fromService:
           name: taxi-db
           property: connectionString
-      - key: NODE_VERSION
-        value: 20.10.0
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRES_IN
@@ -52,5 +50,3 @@ services:
         value: https://taxi-backend.onrender.com/api
       - key: CI
         value: false
-      - key: NODE_VERSION
-        value: 20.10.0
