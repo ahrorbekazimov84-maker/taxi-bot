@@ -3,7 +3,6 @@ services:
     name: taxi-db
     region: oregon
     plan: free
-    branch: main
     postgresVersion: 15
     databaseName: taxi_db
 
@@ -12,16 +11,23 @@ services:
     env: node
     region: oregon
     plan: free
-    branch: main
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - backend/**
     envVars:
       - key: DATABASE_URL
         fromService:
           name: taxi-db
           property: connectionString
+      - key: NODE_VERSION
+        value: 20.10.0
       - key: JWT_SECRET
-        value: change-me-secret
+        generateValue: true
       - key: JWT_EXPIRES_IN
         value: 7d
 
@@ -30,9 +36,21 @@ services:
     env: static
     region: oregon
     plan: free
-    branch: main
-    buildCommand: cd crm && npm install && npm run build
-    publishPath: crm/build
+    rootDir: crm
+    buildCommand: npm install && npm run build
+    publishPath: build
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - crm/**
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
         value: https://taxi-backend.onrender.com/api
+      - key: CI
+        value: false
+      - key: NODE_VERSION
+        value: 20.10.0
