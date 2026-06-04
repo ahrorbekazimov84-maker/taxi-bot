@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "migrate": "node src/config/migrate.js"
+    "migrate": "node src/config/migrate.js",
+    "db:migrate": "npm run migrate"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -21,7 +22,7 @@
     "uuid": "^9.0.0"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=18.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

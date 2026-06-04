@@ -21,6 +21,9 @@ const migrate = async () => {
   try {
     await client.query('BEGIN');
 
+    // Postgres UUID helper
+    await client.query(`CREATE EXTENSION IF NOT EXISTS "pgcrypto";`);
+
     // Users table (passengers)
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
