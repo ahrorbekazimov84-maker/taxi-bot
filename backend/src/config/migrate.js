@@ -16,9 +16,36 @@ const poolConfig = process.env.DATABASE_URL
 
 const pool = new Pool(poolConfig);
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const connectWithRetry = async (maxRetries = 5) => {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      console.log(`📡 Database ulanish harakat ${i + 1}/${maxRetries}...`);
+      const client = await pool.connect();
+      console.log('✅ Database ulanish muvaffaqiyatli!');
+      return client;
+    } catch (err) {
+      console.error(`❌ Ulanish xatosi (${i + 1}/${maxRetries}):`, err.message);
+      if (i < maxRetries - 1) {
+        const delayMs = Math.min(1000 * Math.pow(2, i), 10000);
+        console.log(`⏳ ${delayMs}ms kutilmoqda...`);
+        await sleep(delayMs);
+      }
+    }
+  }
+  throw new Error('Database ulanish muvaffaqiyatli bo\'lmadi');
+};
+
 const migrate = async () => {
-  const client = await pool.connect();
+  let client;
   try {
+    if (!process.env.DATABASE_URL) {
+      console.log('⚠️  DATABASE_URL o\'rnatilmagan. Migratsiya o\'tkazib yuborilmoqda.');
+      return;
+    }
+
+    client = await connectWithRetry();
     await client.query('BEGIN');
 
     // Postgres UUID helper
@@ -147,12 +174,23 @@ const migrate = async () => {
     await client.query('COMMIT');
     console.log('✅ Migration muvaffaqiyatli bajarildi!');
   } catch (err) {
-    await client.query('ROLLBACK');
-    console.error('❌ Migration xatosi:', err);
+    console.error('❌ Migration xatosi:', err.message);
+    if (client) {
+      try {
+        await client.query('ROLLBACK');
+      } catch (rollbackErr) {
+        console.error('Rollback xatosi:', rollbackErr.message);
+      }
+    }
   } finally {
-    client.release();
-    pool.end();
+    if (client) client.release();
+    await pool.end();
+    // Exit cleanly even if migration failed, so the app can start
+    process.exit(0);
   }
 };
 
-migrate();
+migrate().catch(err => {
+  console.error('Migration crash:', err.message);
+  process.exit(0);
+});
